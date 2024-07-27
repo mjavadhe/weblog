@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .models import Post , Comment
-from .forms import PostForm , CommentForm
+from .models import Post , Comment , User
+from .forms import PostForm , CommentForm , UserForm
 
 
 def homePage(request):
@@ -28,7 +28,7 @@ def createPost(request):
         form = PostForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('create_post'))
+            return HttpResponseRedirect(reverse('post_detail'))
     else:
         form = PostForm()
     return render(request, 'createpost.html', {'form': form})
@@ -46,6 +46,17 @@ def createComment(request, postId):
     else:
         form = CommentForm()
     return render(request, 'createcomment.html', {'form': form, 'post': post})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('home_page'))
+    else:
+        form = UserForm()
+    return render(request, 'createuser.html', {'form': form})
 
 
 def test(request):
