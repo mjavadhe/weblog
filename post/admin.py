@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment , User
+from .models import Post, Comment, CustomUser
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -10,14 +10,14 @@ admin.site.register(Post, PostAdmin)
 
 
 class CommentAdmin(admin.ModelAdmin):
-    listDisplay = ['post', 'text']
+    listDisplay = ['pk', 'post', 'text']
 
 
 admin.site.register(Comment, CommentAdmin)
 
 
-class UserAdmin(admin.ModelAdmin):
-    list_display =['username' , 'email']
+class CustomUserAdmin(admin.ModelAdmin):
+    listDisplay = ['username', 'email', 'password']
 
 
-admin.site.register(User , UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)

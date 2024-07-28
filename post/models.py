@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
@@ -14,9 +14,19 @@ class Comment(models.Model):
     text = models.TextField()
 
 
-class User(models.Model):
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.EmailField()
-    username = models.CharField(max_length=150, unique=True)
-    password = models.CharField(max_length=50)
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # تغییر related_name
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups'
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',  # تغییر related_name
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions'
+    )

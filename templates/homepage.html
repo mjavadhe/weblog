@@ -18,6 +18,12 @@
         <a class="nav-link" href="/postlist/">create post</a>
       </li>
 
+        {% for username in usernames %}
+              </li>
+              <li class="nav-item active">
+        <a class="nav-link" href="/postlist/">{{ username }}</a>
+        {% endfor %}
+      </li>
     </ul>
   </div>
 </nav>
