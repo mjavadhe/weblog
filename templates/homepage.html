@@ -26,6 +26,22 @@
       </li>
     </ul>
   </div>
+        {% if user.is_authenticated %}
+        <p>Username: <a href="">{{ user.username }}</a></p>
+{% else %}
+    <p>Shoma login nashodeid.</p>
+{% endif %}
+&nbsp;&nbsp;
+
+
+
+{% if user.is_authenticated %}
+    <p>Username: {{ user.username }}</p>
+    <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+    <p>Shoma login nashodeid.</p>
+{% endif %}
+
 </nav>
 </head>
 <body>

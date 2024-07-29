@@ -10,7 +10,7 @@ urlpatterns = [
     path('commentlist/<int:postId>/comments/', views.createComment, name='create_comment'),
     path('login_register/', views.login_register, name='login_register'),
     path('test/' , views.test),
-
+    path('logout/', views.logout_view, name='logout'),
 
 
 ]

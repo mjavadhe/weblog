@@ -18,10 +18,16 @@ class CommentForm(forms.ModelForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password1', 'password2' , 'is_active')
 
 
 class CustomAuthenticationForm(AuthenticationForm):
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'password')
+    username = forms.CharField(max_length=254)
+    password = forms.CharField(label="Password", strip=False, widget=forms.PasswordInput)
+
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise forms.ValidationError(
+                "This account is inactive.",
+                code='inactive',
+            )
