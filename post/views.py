@@ -60,35 +60,27 @@ def createComment(request, postId):
     return render(request, 'createcomment.html', {'form': form, 'post': post})
 
 
+
 def login_register(request):
     if request.method == 'POST':
         if 'register' in request.POST:
-            register_form = CustomUserCreationForm(request.POST)
-            login_form = CustomAuthenticationForm()
-            if register_form.is_valid():
-                user = register_form.save()
-                login(request, user)
-                return redirect('home')
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            user = CustomUser.objects.create_user(username=username, email=email, password=password)
+            login(request, user)
+            return redirect('home')
         elif 'login' in request.POST:
-            login_form = CustomAuthenticationForm(data=request.POST)
-            register_form = CustomUserCreationForm()
-            if login_form.is_valid():
-                user = authenticate(username=login_form.cleaned_data['username'],
-                                    password=login_form.cleaned_data['password'])
+            login_identifier = request.POST.get('login_identifier')
+            password = request.POST.get('password')
+            user = CustomUser.objects.filter(email=login_identifier).first() or CustomUser.objects.filter(username=login_identifier).first()
+            if user:
+                user = authenticate(request, username=user.username, password=password)
                 if user is not None and user.is_active:
                     login(request, user)
                     return redirect('home')
 
-
-    else:
-        login_form = CustomAuthenticationForm()
-        register_form = CustomUserCreationForm()
-
-    return render(request, 'login_register.html', {'login_form': login_form, 'register_form': register_form})
-
-
-
-
+    return render(request, 'login/form.html')
 
 def test(request):
     return render (request , 'test.html')

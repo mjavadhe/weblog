@@ -18,7 +18,7 @@ class CommentForm(forms.ModelForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2' , 'is_active')
+        fields = ('username', 'password1', 'password2' , 'is_active')
 
 
 class CustomAuthenticationForm(AuthenticationForm):
