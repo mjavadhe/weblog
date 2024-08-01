@@ -36,29 +36,23 @@ def postDetail(request ,postsId):
 @login_required(login_url='/login_register/')
 def createPost(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        if title and text:
+            Post.objects.create(title=title, text=text)
             return HttpResponseRedirect(reverse('post_list'))
-    else:
-        form = PostForm()
-    return render(request, 'createpost.html', {'form': form})
+    return render(request, 'createpost.html')
 
 
 @login_required(login_url='/login_register/')
 def createComment(request, postId):
     post = Post.objects.get(pk=postId)
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.save()
+        text = request.POST.get('text')
+        if text:
+            Comment.objects.create(post=post, text=text)
             return HttpResponseRedirect(reverse('post_detail', args=[postId]))
-    else:
-        form = CommentForm()
-    return render(request, 'createcomment.html', {'form': form, 'post': post})
-
+    return render(request, 'createcomment.html', {'post': post})
 
 
 def login_register(request):
@@ -82,5 +76,7 @@ def login_register(request):
 
     return render(request, 'login/form.html')
 
-def test(request):
-    return render (request , 'test.html')
+
+@login_required(login_url='/login_register/')
+def profile(request):
+    return render(request , 'profile.html')
