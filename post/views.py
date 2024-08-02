@@ -74,7 +74,7 @@ def login_register(request):
                     login(request, user)
                     return redirect('home')
 
-    return render(request, 'login/form.html')
+    return render(request, 'form.html')
 
 
 @login_required(login_url='/login_register/')
