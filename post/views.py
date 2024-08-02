@@ -80,3 +80,12 @@ def login_register(request):
 @login_required(login_url='/login_register/')
 def profile(request):
     return render(request , 'profile.html')
+
+
+@login_required(login_url='/login_register/')
+def commentList(request ,id):
+    post = Post.objects.get(pk = id)
+    posts = Post.objects.get(pk = id) , Post.objects.all()
+    comments = Comment.objects.filter(post = post)
+    context = {'posts':posts , 'comments' : comments}
+    return render(request , 'commentlist.html' , context)

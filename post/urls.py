@@ -7,6 +7,7 @@ urlpatterns = [
     path('posts/', views.postList , name = 'post_list'),
     path('postlist/', views.createPost, name='create_post'),
     path('commentlist/<int:postId>/comments/', views.createComment, name='create_comment'),
+    path('comments/<int:id>/', views.commentList, name='commentlist'),
     path('login_register/', views.login_register, name='login_register'),
     path('logout/', views.logout_view, name='logout'),
     path('profile/' , views.profile , name='profile'),

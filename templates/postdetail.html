@@ -7,32 +7,118 @@
 </head>
 <body>
 {% block content %}
-{% for post in posts %}
-    {% if forloop.first %}
-        <h1 style="color:blue;">post:</h1>
-        -------------------
-    {% endif %}
-    {% if forloop.first %}
-        <h1>title:</h1>
-    {% endif %}
-    <h2>{{ post.title }}</h2>
-    {% if forloop.first %}
-        <h1>text:</h1>
-    {% endif %}
-    <h3>{{ post.text }}</h3>
-    {% if forloop.first %}
-        <h1>comments:</h1>
-    {% endif %}
-    {% if forloop.first %}
-        <button><a href="/commentlist/{{post.id}}/comments/">Create a Comment for this post</a></button>
-    {% endif %}
-{% endfor %}
+    {% for post in posts %}
+        {% if forloop.first %}
+            <form method="post">
+                <p align="center">post id: {{ post.pk }}</p>
+                {% csrf_token %}
+                <label for="title">Title:</label>
+                <p type="text" id="title" name="title" maxlength="50" required>
+                    <h2>{{ post.title }}</h2>
+                </p><br>
+                <label for="text">Text:</label>
+                <p type="text" id="title" name="title" maxlength="50" required>
+                    <h2>{{ post.text }}</h2>
+                </p><br>
+                <button><a href="/comments/{{post.id}}/">comment</a></button>
+            </form>
+        {% endif %}
+    {% endfor %}
+ 
+<style>
+html, body {
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    background: -webkit-linear-gradient(left, #9896F0, #FBC8D5);
+}
 
-{% for comment in comments %}
-    <h2>-{{ comment.text }}</h2>
-{% endfor %}
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: auto;
+}
 
-<button onclick="history.back()">Go Back</button>
+form label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+form button {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background: #45a049;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+button a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    form {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    form input[type="text"],
+    form textarea {
+        padding: 8px;
+    }
+
+    form button {
+        padding: 8px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    form {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    form input[type="text"],
+    form textarea {
+        padding: 5px;
+    }
+
+    form button {
+        padding: 5px 10px;
+    }
+}
+</style>
+
+
+
+
+
+
 {% endblock %}
 
 </body>
