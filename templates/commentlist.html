@@ -6,7 +6,9 @@
 <body>
 {% block content %}
 {% for comment in comments %}
-    <h2>-{{ comment.text }}</h2>
+<h2>Comments</h2>
+
+    <p>Nevisande: {{ comment.author.username }} - Text: {{ comment.text }}</p>
 {% endfor %}
 
 {% for post in posts %}

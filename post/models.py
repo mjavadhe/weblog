@@ -1,18 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class Post(models.Model):
-    title = models.CharField(max_length=50)
-    text = models.TextField()
-
-    def __str__(self):
-        return '{}.{}'.format(self.pk, self.title)
-
-
-class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    text = models.TextField()
-
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
@@ -31,3 +19,17 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions'
     )
+
+
+class P(models.Model):
+    author = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    text = models.TextField()
+    def __str__(self):
+        return '{}.{}'.format(self.pk, self.title)
+
+
+class C(models.Model):
+    author = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
+    post = models.ForeignKey(P, on_delete=models.CASCADE)
+    text = models.TextField()

@@ -1,19 +1,19 @@
 from django.contrib import admin
-from .models import Post, Comment, CustomUser
+from .models import P, C, CustomUser
 
 
-class PostAdmin(admin.ModelAdmin):
-    listDisplay = ['title', 'text']
+class PAdmin(admin.ModelAdmin):
+    listDisplay = ['author','title', 'text']
 
 
-admin.site.register(Post, PostAdmin)
+admin.site.register(P, PAdmin)
 
 
-class CommentAdmin(admin.ModelAdmin):
-    listDisplay = ['pk', 'post', 'text']
+class CAdmin(admin.ModelAdmin):
+    listDisplay = ['author', 'post', 'text']
 
 
-admin.site.register(Comment, CommentAdmin)
+admin.site.register(C, CAdmin)
 
 
 class CustomUserAdmin(admin.ModelAdmin):

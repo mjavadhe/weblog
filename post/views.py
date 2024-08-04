@@ -1,7 +1,7 @@
 from django.shortcuts import render ,redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .models import Post , Comment , CustomUser
+from .models import P , C , CustomUser
 from .forms import PostForm , CommentForm
 from django.contrib.auth import login, authenticate
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
@@ -20,40 +20,43 @@ def homePage(request):
 
 @login_required(login_url='/login_register/')
 def postList(request):
-    posts = Post.objects.all()
+    posts = P.objects.all()
     context = {'posts' : posts}
     return render(request , 'postlist.html' , context)
 
 @login_required(login_url='/login_register/')
 def postDetail(request ,postsId):
-    post = Post.objects.get(pk = postsId)
-    posts = Post.objects.get(pk = postsId) , Post.objects.all()
-    comments = Comment.objects.filter(post = post)
+    post = P.objects.get(pk = postsId)
+    posts = P.objects.get(pk = postsId) , P.objects.all()
+    comments = C.objects.filter(post = post)
     context = {'posts':posts , 'comments' : comments}
     return render(request , 'postdetail.html' , context)
 
 
 @login_required(login_url='/login_register/')
-def createPost(request):
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        text = request.POST.get('text')
-        if title and text:
-            Post.objects.create(title=title, text=text)
-            return HttpResponseRedirect(reverse('post_list'))
-    return render(request, 'createpost.html')
-
-
-@login_required(login_url='/login_register/')
 def createComment(request, postId):
-    post = Post.objects.get(pk=postId)
+    post = P.objects.get(pk=postId)
     if request.method == 'POST':
         text = request.POST.get('text')
+
         if text:
-            Comment.objects.create(post=post, text=text)
+            C.objects.create(author=request.user  , post=post, text=text)
             return HttpResponseRedirect(reverse('post_detail', args=[postId]))
     return render(request, 'createcomment.html', {'post': post})
 
+
+@login_required(login_url='/login_register/')
+def createPost(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('post_detail', post_id=post.id)
+    else:
+        form = PostForm()
+    return render(request, 'createpost.html', {'form': form})
 
 def login_register(request):
     if request.method == 'POST':
@@ -84,8 +87,8 @@ def profile(request):
 
 @login_required(login_url='/login_register/')
 def commentList(request ,id):
-    post = Post.objects.get(pk = id)
-    posts = Post.objects.get(pk = id) , Post.objects.all()
-    comments = Comment.objects.filter(post = post)
+    post = P.objects.get(pk = id)
+    posts = P.objects.get(pk = id) , P.objects.all()
+    comments = C.objects.filter(post = post)
     context = {'posts':posts , 'comments' : comments}
     return render(request , 'commentlist.html' , context)

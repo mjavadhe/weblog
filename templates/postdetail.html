@@ -12,6 +12,10 @@
             <form method="post">
                 <p align="center">post id: {{ post.pk }}</p>
                 {% csrf_token %}
+                <label for="author">author:</label>
+                <p type="text" id="title" name="title" maxlength="50" required>
+                    <h2><a href="#">{{ post.author.username }}</a></h2>
+                </p><br>
                 <label for="title">Title:</label>
                 <p type="text" id="title" name="title" maxlength="50" required>
                     <h2>{{ post.title }}</h2>
@@ -20,11 +24,11 @@
                 <p type="text" id="title" name="title" maxlength="50" required>
                     <h2>{{ post.text }}</h2>
                 </p><br>
+
                 <button><a href="/comments/{{post.id}}/">comment</a></button>
             </form>
         {% endif %}
     {% endfor %}
- 
 <style>
 html, body {
     height: 100%;
@@ -113,13 +117,6 @@ button a {
     }
 }
 </style>
-
-
-
-
-
-
 {% endblock %}
-
 </body>
 </html>
