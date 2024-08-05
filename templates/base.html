@@ -30,7 +30,11 @@
                         <a href="{% url 'logout' %}">Logout</a>
                     </div>
              {% else %}
-                    <p>Shoma login nashodeid.</p>
+                  <a class="nav-link" href="#">profile</a>
+                    <div class="dropdown-content">
+                        <a href="/profile/">edit profile</a>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </div>
              {% endif %}
          </div>
       </li>

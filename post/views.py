@@ -47,6 +47,7 @@ def createComment(request, postId):
 
 @login_required(login_url='/login_register/')
 def createPost(request):
+    user = CustomUser.objects.all()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -56,7 +57,7 @@ def createPost(request):
             return redirect('post_detail', post_id=post.id)
     else:
         form = PostForm()
-    return render(request, 'createpost.html', {'form': form})
+    return render(request, 'createpost.html', {'form': form , 'user' : user})
 
 def login_register(request):
     if request.method == 'POST':
@@ -92,3 +93,18 @@ def commentList(request ,id):
     comments = C.objects.filter(post = post)
     context = {'posts':posts , 'comments' : comments}
     return render(request , 'commentlist.html' , context)
+
+
+@login_required(login_url='/login_register/')
+def userProfile(request, postId):
+    user = CustomUser.objects.get(pk=postId)
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        post = P.oblects.all()
+        context = {'user' : user ,'post' : post}
+
+        if text:
+            C.objects.create(author=request.user  , user=user, text=text)
+            return HttpResponseRedirect(reverse('post_detail', args=[postId]))
+    return render(request, 'userprofile.html', {'user': user})
+

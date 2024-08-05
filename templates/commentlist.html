@@ -8,7 +8,7 @@
 {% for comment in comments %}
 <h2>Comments</h2>
 
-    <p>Nevisande: {{ comment.author.username }} - Text: {{ comment.text }}</p>
+    <p>writer: <a href="#">{{ comment.author.username }}</a> - Text: {{ comment.text }}</p>
 {% endfor %}
 
 {% for post in posts %}
